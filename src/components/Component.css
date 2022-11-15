@@ -1,0 +1,14 @@
+.row-todo {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+
+}
+.checkbox-todo {
+    font-size: 16px;
+    color: black;
+
+}
+.description-todo {
+    padding-left: 24px ;
+}

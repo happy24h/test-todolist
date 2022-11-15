@@ -13,3 +13,8 @@ p {
 .ant-select-multiple .ant-select-selection-item {
   height: 27px;
 }
+
+.ant-tag {
+  height: 100%;
+ 
+}

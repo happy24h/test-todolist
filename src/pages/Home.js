@@ -7,7 +7,7 @@ function Home() {
   return (
     <div
       style={{
-        width: 500,
+        width: 600,
         margin: "0 auto",
         display: "flex",
         flexDirection: "column",

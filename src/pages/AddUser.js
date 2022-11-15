@@ -13,7 +13,10 @@ import { useNavigate } from "react-router-dom";
 const { TextArea } = Input;
 
 function AddUser() {
-  const [todoName, setTodoName] = useState("");
+  const [todoName, setTodoName] = useState({
+    title: "",
+    description: "",
+  });
   const [priority, setPriority] = useState("Medium");
 
   const todoList = useSelector(todosRemainingSelector);
@@ -25,7 +28,8 @@ function AddUser() {
     dispatch(
       addTodo({
         id: uuidv4(),
-        name: todoName,
+        name: title,
+        description: description,
         priority: priority,
         completed: false,
       })
@@ -38,7 +42,8 @@ function AddUser() {
 
   const handleInputChange = (e) => {
     console.log("handleInputChange", e.target.value);
-    setTodoName(e.target.value);
+    let { name, value } = e.target;
+    setTodoName({ ...todoName, [name]: value });
   };
 
   const handlePriorityChange = (value) => {
@@ -48,74 +53,91 @@ function AddUser() {
   const onChange = (time, timeString) => {
     console.log(time, timeString);
   };
+  let { title, description } = todoName;
   return (
-    <div style={{ width: 600, margin: "0 auto" }}>
-      <h2 style={{ textAlign: "center", marginBottom: 30 }}>New Task</h2>
-      <Row style={{ height: "calc(100% - 40px)" }}>
-        <Col span={24}>
-          <Input.Group
-            style={{ display: "flex", flexDirection: "column" }}
-            compact>
-            <Input
-              value={todoName}
-              placeholder="Add new task"
-              onChange={handleInputChange}
-            />
-            <div
-              style={{
-                marginTop: 25,
-              }}>
-              <p>
-                <label>Description:</label>
-              </p>
-              <TextArea
-                rows={4}
-                placeholder="This is content ..."
-                maxLength={6}
+    <div
+      style={{
+        width: 600,
+        margin: "0 auto",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "#f5f5f5",
+        padding: 20,
+        boxShadow: "0 0 10px 4px #bfbfbf",
+        borderRadius: 5,
+        height: "90vh",
+      }}>
+      <div style={{ width: 500, margin: "0 auto" }}>
+        <h2 style={{ textAlign: "center", marginBottom: 30 }}>New Task</h2>
+        <Row style={{ height: "calc(100% - 40px)" }}>
+          <Col span={24}>
+            <Input.Group
+              style={{ display: "flex", flexDirection: "column" }}
+              compact>
+              <Input
+                name="title"
+                value={title}
+                placeholder="Add new task"
+                onChange={handleInputChange}
               />
-            </div>
-            <div
-              style={{
-                margin: "25px 0 30px",
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}>
-              <div>
+              <div
+                style={{
+                  marginTop: 25,
+                }}>
                 <p>
-                  <label>Due date:</label>
+                  <label>Description:</label>
                 </p>
-                <TimePicker
-                  onChange={onChange}
-                  defaultOpenValue={moment("00:00:00", "HH:mm:ss")}
+                <TextArea
+                  name="description"
+                  value={description}
+                  rows={4}
+                  placeholder="This is content ..."
+                  minLength={1}
+                  onChange={handleInputChange}
                 />
               </div>
-              <div>
-                <p>
-                  <label>Priority:</label>
-                </p>
-                <Select
-                  defaultValue="Medium"
-                  value={priority}
-                  onChange={handlePriorityChange}>
-                  <Select.Option value="High" label="High">
-                    <Tag color="red">High</Tag>
-                  </Select.Option>
-                  <Select.Option value="Medium" label="Medium">
-                    <Tag color="blue">Medium</Tag>
-                  </Select.Option>
-                  <Select.Option value="Low" label="Low">
-                    <Tag color="gray">Low</Tag>
-                  </Select.Option>
-                </Select>
+              <div
+                style={{
+                  margin: "25px 0 30px",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}>
+                <div>
+                  <p>
+                    <label>Due date:</label>
+                  </p>
+                  <TimePicker
+                    onChange={onChange}
+                    defaultOpenValue={moment("00:00:00", "HH:mm:ss")}
+                  />
+                </div>
+                <div>
+                  <p>
+                    <label>Priority:</label>
+                  </p>
+                  <Select
+                    defaultValue="Medium"
+                    value={priority}
+                    onChange={handlePriorityChange}>
+                    <Select.Option value="High" label="High">
+                      <Tag color="red">High</Tag>
+                    </Select.Option>
+                    <Select.Option value="Medium" label="Medium">
+                      <Tag color="blue">Medium</Tag>
+                    </Select.Option>
+                    <Select.Option value="Low" label="Low">
+                      <Tag color="gray">Low</Tag>
+                    </Select.Option>
+                  </Select>
+                </div>
               </div>
-            </div>
-            <Button type="primary" onClick={handleAddButtonClick}>
-              Add
-            </Button>
-          </Input.Group>
-        </Col>
-        {/* <Col
+              <Button type="primary" onClick={handleAddButtonClick}>
+                Add Task
+              </Button>
+            </Input.Group>
+          </Col>
+          {/* <Col
           span={24}
           style={{ height: "calc(100% - 40px)", overflowY: "auto" }}>
           {todoList.map((todo) => (
@@ -128,7 +150,8 @@ function AddUser() {
             />
           ))}
         </Col> */}
-      </Row>
+        </Row>
+      </div>
     </div>
   );
 }
