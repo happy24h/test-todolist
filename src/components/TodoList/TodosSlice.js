@@ -33,6 +33,20 @@ const todoListReducer = (state = initState, action) => {
           ? { ...todo, completed: !todo.completed }
           : todo
       );
+    case "todoList/delete":
+      const contactFilter = state.filter((contact) =>
+        contact.id === action.payload ? null : contact
+      );
+      state = contactFilter;
+      return state;
+    case "todoList/update":
+      const contactUpdate = state.filter((contact) =>
+        contact.id === action.payload.id
+          ? Object.assign(contact, action.payload)
+          : contact
+      );
+      state = contactUpdate;
+      return state;
     default:
       return state;
   }

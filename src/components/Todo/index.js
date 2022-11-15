@@ -2,7 +2,7 @@ import { Row, Tag, Checkbox, Button } from "antd";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { toggleTodoStatus } from "../../redux/actions";
+import { toggleTodoStatus, deleteTodo } from "../../redux/actions";
 import "../Component.css";
 
 const priorityColorMapping = {
@@ -19,6 +19,10 @@ export default function Todo({ name, prioriry, completed, id, description }) {
   const toggleCheckbox = () => {
     setChecked(!checked);
     dispatch(toggleTodoStatus(id));
+  };
+
+  const handleDelete = (id) => {
+    dispatch(deleteTodo(id));
   };
 
   return (
@@ -49,7 +53,11 @@ export default function Todo({ name, prioriry, completed, id, description }) {
             Update
           </Button>
         </Link>
-        <Button type="primary" danger style={{ margin: "0 5px" }}>
+        <Button
+          onClick={() => handleDelete(id)}
+          type="primary"
+          danger
+          style={{ margin: "0 5px" }}>
           Delete
         </Button>
       </div>

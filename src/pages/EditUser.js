@@ -1,14 +1,11 @@
 import { Col, Row, Input, Button, Select, Tag } from "antd";
-import Todo from "../components/Todo";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo } from "../redux/actions";
-import { v4 as uuidv4 } from "uuid";
-import { useState } from "react";
-import { todosRemainingSelector } from "../redux/selectors";
+import { updateTodo } from "../redux/actions";
+import { useEffect, useState } from "react";
 import { TimePicker } from "antd";
 import moment from "moment";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const { TextArea } = Input;
 
@@ -18,16 +15,30 @@ function EditUser() {
     description: "",
   });
   const [priority, setPriority] = useState("Medium");
+  const { id } = useParams(); //> http://localhost:3000/edit/1
 
-  const todoList = useSelector(todosRemainingSelector);
+  const todoList = useSelector((state) => state.todoList);
+  console.log("check todolist edit", todoList);
+  const currentContact = todoList.find(
+    (contact) => contact.id === parseInt(id)
+  );
+  console.log(currentContact);
+
+  useEffect(() => {
+    setTodoName({
+      title: currentContact.name,
+      description: currentContact.description,
+    });
+    setPriority(currentContact.priority);
+  }, []);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleAddButtonClick = () => {
     dispatch(
-      addTodo({
-        id: uuidv4(),
+      updateTodo({
+        id: +id,
         name: title,
         description: description,
         priority: priority,
