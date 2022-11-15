@@ -1,10 +1,7 @@
 import { Col, Row, Input, Button, Select, Tag } from "antd";
-import Todo from "../components/Todo";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addTodo } from "../redux/actions";
-import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
-import { todosRemainingSelector } from "../redux/selectors";
 import { TimePicker } from "antd";
 import moment from "moment";
 import React from "react";
@@ -18,8 +15,8 @@ function AddUser() {
     description: "",
   });
   const [priority, setPriority] = useState("Medium");
-
-  const todoList = useSelector(todosRemainingSelector);
+  let num = Math.floor(Math.random() * 999999);
+  console.log("check num", num);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,7 +24,7 @@ function AddUser() {
   const handleAddButtonClick = () => {
     dispatch(
       addTodo({
-        id: uuidv4(),
+        id: num,
         name: title,
         description: description,
         priority: priority,
@@ -137,19 +134,6 @@ function AddUser() {
               </Button>
             </Input.Group>
           </Col>
-          {/* <Col
-          span={24}
-          style={{ height: "calc(100% - 40px)", overflowY: "auto" }}>
-          {todoList.map((todo) => (
-            <Todo
-              key={todo.id}
-              id={todo.id}
-              name={todo.name}
-              prioriry={todo.priority}
-              completed={todo.completed}
-            />
-          ))}
-        </Col> */}
         </Row>
       </div>
     </div>

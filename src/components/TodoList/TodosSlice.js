@@ -25,7 +25,8 @@ const initState = [
 const todoListReducer = (state = initState, action) => {
   switch (action.type) {
     case "todoList/addTodo":
-      return [...state, action.payload];
+      state = [...state, action.payload];
+      return state;
 
     case "todoList/toggleTodoStatus":
       return state.map((todo) =>

@@ -30,7 +30,7 @@ function EditUser() {
       description: currentContact.description,
     });
     setPriority(currentContact.priority);
-  }, []);
+  }, [currentContact]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
