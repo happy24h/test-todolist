@@ -17,6 +17,7 @@ export default function TodoList() {
             prioriry={todo.priority}
             completed={todo.completed}
             description={todo.description}
+            time={todo.time}
           />
         ))}
       </Col>

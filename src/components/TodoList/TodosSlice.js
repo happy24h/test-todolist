@@ -5,6 +5,7 @@ const initState = [
     completed: false,
     priority: "Medium",
     description: "This is content",
+    time: "2022-11-15 11:35:58",
   },
   {
     id: 2,
@@ -12,6 +13,7 @@ const initState = [
     completed: true,
     priority: "High",
     description: "This is content",
+    time: "2022-11-15 11:35:58",
   },
   {
     id: 3,
@@ -19,6 +21,7 @@ const initState = [
     completed: false,
     priority: "Low",
     description: "This is content",
+    time: "2022-11-15 11:35:58",
   },
 ];
 

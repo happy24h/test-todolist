@@ -2,10 +2,15 @@ import { Col, Row, Input, Button, Select, Tag } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { updateTodo } from "../redux/actions";
 import { useEffect, useState } from "react";
-import { TimePicker } from "antd";
-import moment from "moment";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
+import { DatePicker, Space } from "antd";
+import { toast } from "react-toastify";
+
+const onOk = (value) => {
+  console.log("onOk: ", value);
+};
 
 const { TextArea } = Input;
 
@@ -15,6 +20,7 @@ function EditUser() {
     description: "",
   });
   const [priority, setPriority] = useState("Medium");
+  const [time, setTime] = useState();
   const { id } = useParams(); //> http://localhost:3000/edit/1
 
   const todoList = useSelector((state) => state.todoList);
@@ -30,25 +36,32 @@ function EditUser() {
       description: currentContact.description,
     });
     setPriority(currentContact.priority);
+    setTime(currentContact.time);
   }, [currentContact]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleAddButtonClick = () => {
-    dispatch(
-      updateTodo({
-        id: +id,
-        name: title,
-        description: description,
-        priority: priority,
-        completed: false,
-      })
-    );
+    if (!id || !title || !description || !priority || !time) {
+      toast.warning("Vui lòng nhập đầy đủ thông tin!");
+    } else {
+      dispatch(
+        updateTodo({
+          id: +id,
+          name: title,
+          description: description,
+          priority: priority,
+          completed: false,
+          time: time,
+        })
+      );
+      toast.success("update task success!");
 
-    setTodoName("");
-    setPriority("Medium");
-    navigate("/");
+      setTodoName("");
+      setPriority("Medium");
+      navigate("/");
+    }
   };
 
   const handleInputChange = (e) => {
@@ -61,8 +74,11 @@ function EditUser() {
     setPriority(value);
   };
 
-  const onChange = (time, timeString) => {
-    console.log(time, timeString);
+  const onChange = (value, dateString) => {
+    console.log("Selected Time: ", value);
+    console.log("Formatted Selected Time: ", dateString);
+
+    setTime(dateString);
   };
   let { title, description } = todoName;
   return (
@@ -118,10 +134,10 @@ function EditUser() {
                   <p>
                     <label>Due date:</label>
                   </p>
-                  <TimePicker
-                    onChange={onChange}
-                    defaultOpenValue={moment("00:00:00", "HH:mm:ss")}
-                  />
+
+                  <Space direction="vertical" size={12}>
+                    <DatePicker showTime onChange={onChange} onOk={onOk} />
+                  </Space>
                 </div>
                 <div>
                   <p>
@@ -144,7 +160,7 @@ function EditUser() {
                 </div>
               </div>
               <Button type="primary" onClick={handleAddButtonClick}>
-                Add Task
+                Update Task
               </Button>
             </Input.Group>
           </Col>

@@ -9,6 +9,12 @@
     color: black;
 
 }
+.time-todo {
+    padding-left: 24px ;
+    font-size: 12px;
+    font-weight: 500;
+}
 .description-todo {
+    margin-top: 3px;
     padding-left: 24px ;
 }

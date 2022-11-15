@@ -2,10 +2,14 @@ import { Col, Row, Input, Button, Select, Tag } from "antd";
 import { useDispatch } from "react-redux";
 import { addTodo } from "../redux/actions";
 import { useState } from "react";
-import { TimePicker } from "antd";
-import moment from "moment";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { DatePicker, Space } from "antd";
+import { toast } from "react-toastify";
+
+const onOk = (value) => {
+  console.log("onOk: ", value);
+};
 
 const { TextArea } = Input;
 
@@ -15,6 +19,7 @@ function AddUser() {
     description: "",
   });
   const [priority, setPriority] = useState("Medium");
+  const [time, setTime] = useState();
   let num = Math.floor(Math.random() * 999999);
   console.log("check num", num);
 
@@ -22,19 +27,25 @@ function AddUser() {
   const navigate = useNavigate();
 
   const handleAddButtonClick = () => {
-    dispatch(
-      addTodo({
-        id: num,
-        name: title,
-        description: description,
-        priority: priority,
-        completed: false,
-      })
-    );
+    if (!num || !title || !description || !priority || !time) {
+      toast.warning("Vui lòng nhập đầy đủ thông tin!");
+    } else {
+      dispatch(
+        addTodo({
+          id: num,
+          name: title,
+          description: description,
+          priority: priority,
+          completed: false,
+          time: time,
+        })
+      );
 
-    setTodoName("");
-    setPriority("Medium");
-    navigate("/");
+      toast.success("Create new task success!");
+      setTodoName("");
+      setPriority("Medium");
+      navigate("/");
+    }
   };
 
   const handleInputChange = (e) => {
@@ -47,8 +58,11 @@ function AddUser() {
     setPriority(value);
   };
 
-  const onChange = (time, timeString) => {
-    console.log(time, timeString);
+  const onChange = (value, dateString) => {
+    console.log("Selected Time: ", value);
+    console.log("Formatted Selected Time: ", dateString);
+
+    setTime(dateString);
   };
   let { title, description } = todoName;
   return (
@@ -104,10 +118,9 @@ function AddUser() {
                   <p>
                     <label>Due date:</label>
                   </p>
-                  <TimePicker
-                    onChange={onChange}
-                    defaultOpenValue={moment("00:00:00", "HH:mm:ss")}
-                  />
+                  <Space direction="vertical" size={12}>
+                    <DatePicker showTime onChange={onChange} onOk={onOk} />
+                  </Space>
                 </div>
                 <div>
                   <p>

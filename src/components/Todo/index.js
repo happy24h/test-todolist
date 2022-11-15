@@ -11,7 +11,14 @@ const priorityColorMapping = {
   Low: "gray",
 };
 
-export default function Todo({ name, prioriry, completed, id, description }) {
+export default function Todo({
+  name,
+  prioriry,
+  completed,
+  id,
+  description,
+  time,
+}) {
   const dispatch = useDispatch();
 
   const [checked, setChecked] = useState(completed);
@@ -40,9 +47,10 @@ export default function Todo({ name, prioriry, completed, id, description }) {
             {name} -{" "}
             <Tag color={priorityColorMapping[prioriry]} style={{ margin: 0 }}>
               {prioriry}
-            </Tag>
+            </Tag>{" "}
           </div>
         </Checkbox>
+        <div className="time-todo">{time}</div>
         <div className="description-todo">{description}</div>
       </div>
 
@@ -50,7 +58,7 @@ export default function Todo({ name, prioriry, completed, id, description }) {
         {" "}
         <Link to={`edit-user/${id}`}>
           <Button type="primary" style={{ margin: "0 5px" }}>
-            Update
+            Detail
           </Button>
         </Link>
         <Button
